@@ -1,0 +1,33 @@
+---
+- name: Configure the login banner
+  hosts: switches
+  connection: network_cli
+  gather_facts: false
+  tasks:
+    - name: Add configure the login banner
+      ios_banner:
+    #You can change below value to (motd, login, incoming or slip-ppp)
+        banner: exec
+        text: |
+          #######################################################
+          #                                                     #
+          #     You have successfully entered this system       #
+          #     $(hostname) on line $(line). Be advised your    #
+          #     action are logged and audits are performed      #
+          #     daily. If you have any questions contact the    #
+          #     system administrator at +47 xx xx xx xx,        #
+          #     email admin'at'yourdomain.net.                  #
+          #                                                     #
+          #     Thank you                                       #
+          #                                                     #
+          #     Your name                                       #
+          #     Network Administrator                           #
+          #     $(domain)                                       #
+          #                                                     #
+          #######################################################
+        state: present
+    #Tasks that save running-config to start-config when modified.
+    - name: save running to start-config when modified
+      ios_config:
+    #You can change below value to (always,never or changed)
+        save_when: modified
